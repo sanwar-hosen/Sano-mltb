@@ -25,8 +25,13 @@ def mirror_status(update, context):
         message = 'No Active Downloads !\n___________________________'
         message += f"\n<b>CPU</b>: {cpu_percent()}% | <b>FREE</b>: {free}" \
                    f"\n<b>RAM</b>: {virtual_memory().percent}% | <b>UPTIME</b>: {currentTime}"
-        reply_message = sendPhoto(message, context.bot, update.message, choice(config_dict["PICS"]))
+        if config_dict['PICS']:
+            reply_message = sendPhoto(message, context.bot, update.message, choice(config_dict["PICS"]))
+        else:
+            reply_message = sendMessage(message, context.bot, update.message)
+
         Thread(target=auto_delete_message, args=(context.bot, update.message, reply_message)).start()
+
     else:
         sendStatusMessage(update.message, context.bot)
         deleteMessage(context.bot, update.message)
