@@ -275,8 +275,12 @@ def is_gdrive_link(url: str):
     return "drive.google.com" in urlparse(url).netloc
 
 def is_Sharerlink(url: str):
-    return bool(match(r'https?:\/\/.+\.gdtot\.\S+|https?:\/\/(filepress|filebee|appdrive|gdflix)\.\S+', url))
-
+    if 'gdtot' in url:
+        regex = r'(https?:\/\/.+\.gdtot\..+\/file\/\d+)'
+    else:
+        regex = r'(https?:\/\/(\S+)\..+\/file\/\S+)'
+    return bool(match(regex, url))
+    
 def is_mega_link(url: str):
     url_ = urlparse(url)
     return any(x in url_.netloc for x in ['mega.nz', 'mega.co.nz'])
